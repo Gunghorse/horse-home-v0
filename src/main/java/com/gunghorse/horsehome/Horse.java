@@ -1,7 +1,11 @@
 package com.gunghorse.horsehome;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection="horses")
+@TypeAlias("horse")
 public class Horse {
 
     @Id

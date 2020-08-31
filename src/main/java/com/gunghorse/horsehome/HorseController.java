@@ -1,9 +1,6 @@
 package com.gunghorse.horsehome;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +26,11 @@ public class HorseController {
     @RequestMapping(value="/rank/{rank}", method = RequestMethod.GET)
     public List<Horse> getByRank(@PathVariable("rank") int rank){
         return this.horseRepository.findByRank(rank);
+    }
+
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+    public void addHorse(@RequestBody Horse horse){
+        horseRepository.save(horse);
     }
 }
