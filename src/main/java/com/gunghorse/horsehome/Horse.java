@@ -11,11 +11,19 @@ public class Horse {
     @Id
     private String id;
     private String name;
-    private int rank;
+    private int age;
+    private String breed;
+    private String coatColors;
+    private Horse father;
+    private Horse mother;
 
-    public Horse(String name, int rank) {
+    public Horse(String name, int age, String breed, String coatColors, Horse father, Horse mother) {
         this.name = name;
-        this.rank = rank;
+        this.age = age;
+        this.breed = breed;
+        this.coatColors = coatColors;
+        this.father = father;
+        this.mother = mother;
     }
 
     public String getId() {
@@ -26,12 +34,44 @@ public class Horse {
         return name;
     }
 
-    public int getRank() {
-        return rank;
+    public int getAge() {
+        return age;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public String getCoatColors() {
+        return coatColors;
+    }
+
+    public Horse getFather() {
+        return father;
+    }
+
+    public void setFather(Horse father) {
+        this.father = father;
+    }
+
+    public Horse getMother() {
+        return mother;
+    }
+
+    public void setMother(Horse mother) {
+        this.mother = mother;
     }
 
     @Override
     public String toString() {
-        return "Person [id=" + id + ", name=" + name + ", rank=" + rank + "]";
+        return "Horse{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", breed='" + breed + '\'' +
+                ", coatColors='" + coatColors + '\'' +
+                ", father=" + father +
+                ", mother=" + mother +
+                '}';
     }
 }
