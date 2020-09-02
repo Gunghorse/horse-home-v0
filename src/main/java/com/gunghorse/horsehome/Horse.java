@@ -4,6 +4,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.Calendar.*;
+
 @Document(collection="horses")
 @TypeAlias("horse")
 public class Horse {
@@ -11,19 +18,22 @@ public class Horse {
     @Id
     private String id;
     private String name;
-    private int age;
+    private String birthDate;
+    private String deathDate;
     private String breed;
     private String coatColors;
-    private Horse father;
-    private Horse mother;
+    private String fatherID;
+    private String fatherName;
+    private String motherID;
+    private String motherName;
+    private List<Horse> children = new LinkedList<>();
 
-    public Horse(String name, int age, String breed, String coatColors, Horse father, Horse mother) {
+
+    public Horse(String name, String birthDate, String breed, String coatColors) {
         this.name = name;
-        this.age = age;
+        this.birthDate = birthDate;
         this.breed = breed;
         this.coatColors = coatColors;
-        this.father = father;
-        this.mother = mother;
     }
 
     public String getId() {
@@ -34,9 +44,22 @@ public class Horse {
         return name;
     }
 
-    public int getAge() {
-        return age;
+    public boolean isDead(){
+        return !deathDate.equals("");
     }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+    public List<Horse> getChildren() {
+        return children;
+    }
+
 
     public String getBreed() {
         return breed;
@@ -46,32 +69,77 @@ public class Horse {
         return coatColors;
     }
 
-    public Horse getFather() {
-        return father;
+    public void addChild(Horse child){
+        this.children.add(child);
     }
 
-    public void setFather(Horse father) {
-        this.father = father;
+    public String getFatherID() {
+        return fatherID;
     }
 
-    public Horse getMother() {
-        return mother;
+    public String getFatherName() {
+        return fatherName;
     }
 
-    public void setMother(Horse mother) {
-        this.mother = mother;
+    public String getMotherID() {
+        return motherID;
     }
 
-    @Override
-    public String toString() {
-        return "Horse{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", breed='" + breed + '\'' +
-                ", coatColors='" + coatColors + '\'' +
-                ", father=" + father +
-                ", mother=" + mother +
-                '}';
+    public String getMotherName() {
+        return motherName;
+    }
+
+    public int getAge(){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date birthDate = sdf.parse(getBirthDate());
+            Calendar birthCal = getCalendar(birthDate);
+            if(!isDead()){
+                Calendar nowCal = getCalendar(new Date());
+                return getDiff(birthCal, nowCal);
+            }else {
+                Date deadDate = sdf.parse(getDeathDate());
+                Calendar deadCal = getCalendar(deadDate);
+                return getDiff(birthCal, deadCal);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private int getDiff(Calendar birthCal, Calendar lastCal){
+        int diff = lastCal.get(YEAR) - birthCal.get(YEAR);
+        if (birthCal.get(MONTH) > lastCal.get(MONTH) ||
+                (birthCal.get(MONTH) == lastCal.get(MONTH) && birthCal.get(DATE) > lastCal.get(DATE))) {
+            diff--;
+        }
+        return diff;
+    }
+
+    private Calendar getCalendar(Date date) {
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(date);
+        return cal;
+    }
+
+    public void setDeathDate(String deathDate){
+        this.deathDate = deathDate;
+    }
+
+    public void setFatherID(String fatherID) {
+        this.fatherID = fatherID;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
+
+    public void setMotherID(String motherID) {
+        this.motherID = motherID;
+    }
+
+    public void setMotherName(String motherName) {
+        this.motherName = motherName;
     }
 }

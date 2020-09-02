@@ -4,23 +4,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-/*
+import java.util.List;
+
+
 @Component
 public class MyRunner implements CommandLineRunner {
 
     @Autowired
-    private HorseRepository repository;
+    private HorseRepository horseRepository;
+    @Autowired
+    private StableRepository stableRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
-        repository.deleteAll();
+        //horseRepository.deleteAll();
+        //stableRepository.deleteAll();
+        /*List<Horse> horses = horseRepository.findAll();
 
-        repository.save(new Horse("Ciuh", 8));
-        repository.save(new Horse("Mustang", 1));
+        Stable stable = new Stable("Top Stable", "Sopot");
+        for(Horse horse : horses)
+            stable.addHorse(horse);
 
+        stableRepository.save(stable);*/
     }
 }
-*/
+
 
 
